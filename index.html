@@ -78,15 +78,25 @@
         /* LAYOUTING */
         .container { max-width: 1200px; margin: 0 auto; padding: 0 1.5rem; }
         .section-py { padding: 6rem 0; }
-        .grid-50-50 { display: grid; grid-template-columns: 1fr; gap: 3rem; align-items: center; }
-        @media (min-width: 768px) { .grid-50-50 { grid-template-columns: 1fr 1fr; gap: 4rem; } }
+        .grid-50-50 { display: grid; grid-template-columns: 1fr; gap: 4rem; align-items: center; }
+        @media (min-width: 768px) { .grid-50-50 { grid-template-columns: 1fr 1fr; gap: 5rem; } }
 
-        /* MULTI-IMAGE COMPOSITE GRID (MAGAZINE STYLE) */
-        .composite-grid { display: grid; grid-template-columns: 2fr 1fr; gap: 1rem; }
-        .composite-grid.alt { grid-template-columns: 1fr 2fr; }
-        .composite-grid img { border-radius: 12px; width: 100%; height: 350px; object-fit: cover; box-shadow: 0 15px 30px rgba(0,0,0,0.5); border: 1px solid rgba(255,255,255,0.05); filter: grayscale(15%); transition: 0.5s; }
-        @media (max-width: 768px) { .composite-grid img { height: 250px; } }
-        .composite-grid img:hover { filter: grayscale(0%); transform: scale(1.02); }
+        /* MULTI-IMAGE COMPOSITE GRID (EDITORIAL OVERLAP STYLE) */
+        .composite-grid { position: relative; height: 450px; width: 100%; display: block; margin-bottom: 2rem; }
+        .comp-img-main { position: absolute; top: 0; left: 0; width: 75%; height: 350px; object-fit: cover; border-radius: 12px; box-shadow: 0 15px 35px rgba(0,0,0,0.6); z-index: 1; filter: grayscale(15%); transition: 0.5s; }
+        .comp-img-sub { position: absolute; bottom: 0; right: 0; width: 55%; height: 260px; object-fit: cover; border-radius: 12px; box-shadow: -10px -10px 30px rgba(0,0,0,0.5); z-index: 2; border: 6px solid var(--zinc-900); filter: grayscale(15%); transition: 0.5s; }
+        
+        /* Alternate for right-side placement */
+        .composite-grid.alt .comp-img-main { left: auto; right: 0; }
+        .composite-grid.alt .comp-img-sub { right: auto; left: 0; border: 6px solid var(--zinc-800); }
+        
+        .composite-grid:hover .comp-img-main, .composite-grid:hover .comp-img-sub { filter: grayscale(0%); transform: scale(1.02); }
+        
+        @media (max-width: 768px) {
+            .composite-grid { height: 350px; }
+            .comp-img-main { height: 280px; width: 80%; }
+            .comp-img-sub { height: 200px; width: 60%; }
+        }
 
         /* TYPOGRAPHY */
         .text-amber { color: var(--amber-500); }
@@ -125,7 +135,8 @@
         .hub-section { position: relative; padding: 8rem 0; background-color: #000; overflow: hidden; }
         .hub-bg { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; opacity: 0.3; }
         .hub-content { position: relative; z-index: 2; text-align: center; max-width: 900px; margin: 0 auto; background: rgba(24,24,27,0.85); padding: 3rem; border-radius: 16px; border: 1px solid var(--amber-600); backdrop-filter: blur(15px); }
-        .hub-inset-img { width: 100%; height: 250px; object-fit: cover; border-radius: 8px; margin-top: 2rem; border: 1px solid rgba(255,255,255,0.1); }
+        .hub-inset-img { width: 100%; max-width: 700px; height: 350px; object-fit: cover; border-radius: 12px; margin: 3rem auto 0; border: 1px solid rgba(255,255,255,0.15); box-shadow: 0 20px 40px rgba(0,0,0,0.7); display: block; }
+        @media (max-width: 768px) { .hub-inset-img { height: 200px; margin-top: 2rem; } .hub-content { padding: 2rem 1.5rem; } }
 
         /* ORDER REVERSAL FOR ALTERNATE LAYOUT */
         @media (min-width: 768px) { .order-md-1 { order: 1; } .order-md-2 { order: 2; } }
@@ -140,7 +151,7 @@
         </div>
     </nav>
 
-    <!-- SECTION 1: HERO (Gambar Latar: Investasi Mewah 1920x1080) -->
+    <!-- SECTION 1: HERO -->
     <header class="hero">
         <img src="img/investasi-properti-mewah-south-kuta-bali.webp" alt="Investasi properti mewah South Kuta Bali dengan pemandangan tebing eksklusif" class="hero-bg" fetchpriority="high" loading="eager" decoding="sync">
         <div class="hero-overlay"></div>
@@ -148,13 +159,15 @@
             <h1 class="h1-hero">Hentikan Spekulasi. <br><span class="text-amber">Amankan Investasi Properti Anda</span> di Jantung Eksklusif South Kuta Bali.</h1>
             <p class="p-body" style="color: #e4e4e7; font-size: 1.25rem;">Jangan pertaruhkan modal miliaran Anda pada proyek developer tanpa rekam jejak yang jelas. Kami hadirkan ekosistem real estate dan resor kelas dunia yang legal, terbangun, dan terintegrasi penuh.</p>
             <p class="p-body" style="color: #e4e4e7; font-size: 1.25rem; margin-bottom: 2.5rem;">Berada di lokasi ultra-premium, hanya 15 menit dari Bandara Internasional Ngurah Rai. Waktu Anda terlalu berharga untuk investasi yang tidak pasti.</p>
-            <a href="https://wa.me/628985570377?text=Halo%20Bapak%20Edwin,%20saya%20mendapat%20informasi%20dari%20portofolio%20eksklusif%20South%20Kuta.%20Saya%20tertarik%20untuk%20konsultasi%20VIP." class="btn-gold pulse-anim" aria-label="Konsultasi VIP WhatsApp">
+            
+            <!-- Ditambahkan margin-bottom ekstra agar tidak mepet putih di mobile -->
+            <a href="https://wa.me/628985570377?text=Halo%20Bapak%20Edwin,%20saya%20mendapat%20informasi%20dari%20portofolio%20eksklusif%20South%20Kuta.%20Saya%20tertarik%20untuk%20konsultasi%20VIP." class="btn-gold pulse-anim" style="margin-bottom: 4rem;" aria-label="Konsultasi VIP WhatsApp">
                 🔒 KONSULTASI VIP VIA WHATSAPP SEKARANG
             </a>
         </div>
     </header>
 
-    <!-- SECTION 2: PAIN POINT & EDUKASI (Gambar: Developer Terpercaya) -->
+    <!-- SECTION 2: PAIN POINT & EDUKASI -->
     <section class="section-py" style="background-color: var(--zinc-100); color: var(--zinc-900);">
         <div class="container grid-50-50">
             <div>
@@ -168,13 +181,13 @@
         </div>
     </section>
 
-    <!-- SECTION 3: PORTOFOLIO LOCCA (Gambar: Fasad Locca + Infinity Pool) -->
+    <!-- SECTION 3: PORTOFOLIO LOCCA -->
     <section class="section-py">
         <div class="container grid-50-50">
-            <!-- Composite Grid Magazine Style -->
+            <!-- REVISI: Editorial Overlap Style -->
             <div class="composite-grid">
-                <img src="img/resort-tebing-mewah-locca-south-kuta.webp" alt="Fasad resort tebing mewah Locca di South Kuta Bali dengan privasi absolut" loading="lazy" decoding="async">
-                <img src="img/fasilitas-infinity-pool-villa-cliff-front-bali.webp" alt="Fasilitas infinity pool eksklusif di villa cliff-front Bali Selatan" loading="lazy" decoding="async">
+                <img src="img/resort-tebing-mewah-locca-south-kuta.webp" alt="Fasad resort tebing mewah Locca di South Kuta Bali dengan privasi absolut" class="comp-img-main" loading="lazy" decoding="async">
+                <img src="img/fasilitas-infinity-pool-villa-cliff-front-bali.webp" alt="Fasilitas infinity pool eksklusif di villa cliff-front Bali Selatan" class="comp-img-sub" loading="lazy" decoding="async">
             </div>
             <div>
                 <h2 class="h2-title">LOCCA Bespoke Coastal Resort: <span class="text-amber">Takhta Tertinggi Privasi Absolut</span></h2>
@@ -188,13 +201,13 @@
         </div>
     </section>
 
-    <!-- SECTION 4: PORTOFOLIO NATADESA (Gambar: Fasad Natadesa + Fasilitas Wellness) -->
+    <!-- SECTION 4: PORTOFOLIO NATADESA -->
     <section class="section-py" style="background-color: var(--zinc-800);">
         <div class="container grid-50-50">
-            <!-- Composite Grid Alternate -->
+            <!-- REVISI: Editorial Overlap Style (Alternate Layout) -->
             <div class="order-md-2 composite-grid alt">
-                <img src="img/fasilitas-wellness-villa-eco-luxury-bali.webp" alt="Fasilitas wellness dan yoga premium di villa eco-luxury Kuta Selatan" loading="lazy" decoding="async">
-                <img src="img/hunian-premium-tropis-berkelanjutan-natadesa-bali.webp" alt="Hunian premium tropis berkelanjutan Natadesa Bali dengan konsep eco-luxury" loading="lazy" decoding="async">
+                <img src="img/hunian-premium-tropis-berkelanjutan-natadesa-bali.webp" alt="Hunian premium tropis berkelanjutan Natadesa Bali dengan konsep eco-luxury" class="comp-img-main" loading="lazy" decoding="async">
+                <img src="img/fasilitas-wellness-villa-eco-luxury-bali.webp" alt="Fasilitas wellness dan yoga premium di villa eco-luxury Kuta Selatan" class="comp-img-sub" loading="lazy" decoding="async">
             </div>
             <div class="order-md-1">
                 <h2 class="h2-title">NATADESA Sustainable Luxury: <span class="text-amber">Harmoni Tropis Berstandar Global</span></h2>
@@ -208,7 +221,7 @@
         </div>
     </section>
 
-    <!-- SECTION 5: THE HUB (Gambar: Background Tech Hub + Inset Ruang Kantor) -->
+    <!-- SECTION 5: THE HUB -->
     <section class="hub-section">
         <img src="img/pusat-bisnis-tech-hub-eksklusif-kuta-selatan.webp" alt="Pusat bisnis dan tech hub eksklusif Kuta Selatan sebagai ekosistem profesional" class="hub-bg" loading="lazy" decoding="async">
         <div class="container">
@@ -216,14 +229,15 @@
                 <h2 class="h2-title">Integrated Hospitality Hub: <span class="text-amber">Jantung Ekonomi Kawasan</span></h2>
                 <h3 class="h3-subtitle">Fasilitas Bisnis & Ritel Berkelas Internasional</h3>
                 <p class="p-body" style="color: #f4f4f5;">Nilai sebuah properti mewah tidak bisa berdiri sendiri tanpa infrastruktur pendukung yang mumpuni. Kami membangun ekosistem seluas ±2.177 SQM (NLA) yang dirancang khusus untuk komunitas profesional global.</p>
-                <p class="p-body" style="color: #f4f4f5;">Area ini berisi kurasi ritel premium, ruang kantor fleksibel, dan pusat teknologi modern. Fasilitas ini menjamin para penghuni maupun tamu resor Anda tidak perlu pergi jauh untuk menikmati gaya hidup dan kebutuhan bisnis kelas dunia.</p>
-                <!-- Inset Image Ruang Kantor -->
+                <p class="p-body" style="color: #f4f4f5; margin-bottom: 0;">Area ini berisi kurasi ritel premium, ruang kantor fleksibel, dan pusat teknologi modern. Fasilitas ini menjamin para penghuni maupun tamu resor Anda tidak perlu pergi jauh untuk menikmati gaya hidup dan kebutuhan bisnis kelas dunia.</p>
+                
+                <!-- REVISI: Inset Image proporsional & mewah -->
                 <img src="img/ruang-kantor-premium-fasilitas-bisnis-bal.webp" alt="Ruang kantor premium dan fasilitas bisnis ritel terintegrasi di Bali" class="hub-inset-img" loading="lazy" decoding="async">
             </div>
         </div>
     </section>
 
-    <!-- SECTION 5.5: LOKASI STRATEGIS (Gambar: Peta Lokasi Bandara) -->
+    <!-- SECTION 5.5: LOKASI STRATEGIS -->
     <section class="section-py" style="background-color: var(--zinc-900);">
         <div class="container grid-50-50">
             <div>
@@ -237,7 +251,7 @@
         </div>
     </section>
 
-    <!-- SECTION 6: FINAL CLOSING (Gambar Latar: Investasi High Yield) -->
+    <!-- SECTION 6: FINAL CLOSING -->
     <section class="section-py" style="position: relative; background-color: #000; border-top: 2px solid var(--amber-600); border-bottom: 2px solid var(--amber-600); overflow: hidden;">
         <img src="img/investasi-real-estate-high-yield-bali.webp" alt="Peluang investasi real estate high-yield eksklusif di wilayah Bali" style="position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; opacity: 0.25; z-index: 1;" loading="lazy" decoding="async">
         
